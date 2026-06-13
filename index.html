@@ -62,7 +62,7 @@
   </div>
 </section>
 
-  <!-- ===== MEMORIAS 2025 ===== -->
+<!-- ===== MEMORIAS 2025 ===== -->
 <section class="section section--paper2" id="memorias">
   <div class="wrap">
     <div class="mem-grid">
@@ -121,7 +121,6 @@
   </div>
 </section>
 
-
 <!-- ===== FESTIVAL ===== -->
 <section class="section section--dark" id="festival">
   <div class="wrap">
@@ -136,8 +135,7 @@
           El Festival Hormiga de Oro
         </p>
         <h2>Lo mejor del talento infantil de <em>música colombiana</em></h2>
-        <p>EL FESTIVAL HORMIGA DE ORO es un espectáculo musical que posiciona a Bucaramanga como eje cultural del país, impulsando el talento infantil de Santander y Colombia, a través de espacios presenciales y digitales, donde las familias colombianas conocen y conectan con su cultura, su música, los ritmos tradicionales, generando así sentido de pertenencia, motivación, identidad y amor por la música de la tierra que les vio nacer.
-</p>
+        <p>EL FESTIVAL HORMIGA DE ORO es un espectáculo musical que posiciona a Bucaramanga como eje cultural del país, impulsando el talento infantil de Santander y Colombia, a través de espacios presenciales y digitales, donde las familias colombianas conocen y conectan con su cultura, su música, los ritmos tradicionales, generando así sentido de pertenencia, motivación, identidad y amor por la música de la tierra que les vio nacer.</p>
         <div class="fest-when">
           <span>📅 Del 5 al 8 de septiembre de 2024</span>
           <span>📍 Bucaramanga, Santander</span>
@@ -276,7 +274,6 @@
         <textarea id="message" name="message" placeholder="Escribe aquí tu mensaje"></textarea>
       </div>
       <button type="submit" class="btn btn--crimson">Enviar mensaje</button>
-   
     </form>
   </div>
 </section>
@@ -372,6 +369,35 @@
     ok.classList.add('show');
     window.location.href=`mailto:contacto@fundacionananda.org?subject=${subject}&body=${body}`;
   });
+})();
+
+/* ---------- Galería + Lightbox ---------- */
+(function(){
+  const track=document.getElementById('carTrack');
+  if(!track) return;
+  const thumbs=[...track.querySelectorAll('.thumb')];
+  const imgs=thumbs.map(t=>{const im=t.querySelector('img');return {src:im.getAttribute('src'),cap:im.getAttribute('alt')};});
+  const lb=document.getElementById('lightbox');
+  const lbImg=document.getElementById('lbImg');
+  const lbCap=document.getElementById('lbCap');
+  let cur=0;
+  function open(i){cur=i;lbImg.src=imgs[i].src;lbImg.alt=imgs[i].cap;lbCap.textContent=imgs[i].cap;lb.classList.add('open');lb.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';}
+  function close(){lb.classList.remove('open');lb.setAttribute('aria-hidden','true');document.body.style.overflow='';}
+  function go(d){open((cur+d+imgs.length)%imgs.length);}
+  thumbs.forEach((t,i)=>t.addEventListener('click',()=>open(i)));
+  lb.querySelector('.lb-close').addEventListener('click',close);
+  lb.querySelector('.lb-prev').addEventListener('click',()=>go(-1));
+  lb.querySelector('.lb-next').addEventListener('click',()=>go(1));
+  lb.addEventListener('click',e=>{if(e.target===lb)close();});
+  document.addEventListener('keydown',e=>{
+    if(!lb.classList.contains('open'))return;
+    if(e.key==='Escape')close();
+    if(e.key==='ArrowRight')go(1);
+    if(e.key==='ArrowLeft')go(-1);
+  });
+  const step=()=>Math.min(track.clientWidth*0.8,340);
+  document.querySelector('.car-prev').addEventListener('click',()=>track.scrollBy({left:-step(),behavior:'smooth'}));
+  document.querySelector('.car-next').addEventListener('click',()=>track.scrollBy({left:step(),behavior:'smooth'}));
 })();
 
 document.getElementById('year').textContent=new Date().getFullYear();
